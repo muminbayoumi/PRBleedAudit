@@ -1,0 +1,55 @@
+---
+title: "Untitled"
+author: "Mumin Mohamed"
+date: "02/09/2020"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+  word_document: default
+always_allow_html: true
+tables: yes
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+---
+
+
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = TRUE,knitr.table.print="latex")
+
+library(here)
+source("analysis.R")
+```
+
+
+```{r echo=FALSE, paged.print=TRUE,fig.pos='H'}
+
+
+table1<- tableone::CreateTableOne(data = data, vars = c("LOS","AdmissionHb"),strata = "Gender",addOverall = T ,argsNonNormal = c("LOS","AdmissionHb") )
+
+print(table1,test = F,printToggle = F,nonnormal = c("LOS","AdmissionHb"))%>% kableone(booktabs=T,format="html") %>%kable_styling(position = "float_left",full_width = F,font_size = 14) 
+
+```
+```{r echo=FALSE}
+library(dplyr)
+LOS <-  summary(data$LOS)
+Hb <-  summary(data$AdmissionHb)
+rbind(Hb,LOS) %>% kable(booktabs=T,format="html") %>% kable_styling(position = "float_left",full_width = F)
+
+
+```
+
+
